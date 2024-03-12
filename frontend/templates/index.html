@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminder App</title>
+    <style>
+      
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Set a Reminder</h1>
+    <form id="reminderForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <label for="reminderType">Reminder Type:</label>
+        <select id="reminderType" name="reminderType" required>
+            <option value="SMS">SMS</option>
+            <option value="Email">Email</option>
+        </select>
+
+        <button type="submit">Set Reminder</button>
+    </form>
+
+    <script>
+       
+        document.getElementById('reminderForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+         
+            const formData = new FormData(this);
+            const reminderData = {};
+            formData.forEach((value, key) => {
+                reminderData[key] = value;
+            });
+
+          
+            fetch('/api/create-reminder/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reminderData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.status); 
+               
+                document.getElementById('reminderForm').reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
