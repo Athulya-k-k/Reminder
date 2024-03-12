@@ -21,5 +21,5 @@ from reminders.views import create_reminder
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/create-reminder/', create_reminder, name='create_reminder'),
-    path('frontend/', include('frontend.urls')),
+    path('', include('frontend.urls')),
 ]
